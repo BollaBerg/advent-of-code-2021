@@ -1,15 +1,20 @@
+fn split_line(line: &str) -> (&str, u16) {
+    let mut splitline = line.split(' ');
+    let command = splitline.next().unwrap();
+    let value = splitline
+        .next()
+        .unwrap()
+        .parse::<u16>()
+        .unwrap();
+    (command, value)
+}
+
 fn task1(entries: &String) {
     let mut depth = 0;
     let mut horizontal = 0;
 
     for line in entries.lines() {
-        let mut splitline = line.split(' ');
-        let command = splitline.next().unwrap();
-        let value = splitline
-            .next()
-            .unwrap()
-            .parse::<u16>()
-            .unwrap();
+        let (command, value) = split_line(line);
         
         match command {
             "forward" => horizontal += value,
@@ -30,14 +35,7 @@ fn task2(entries: &String) {
     let mut aim = 0;
 
     for line in entries.lines() {
-        let mut splitline = line.split(' ');
-        let command = splitline.next().unwrap();
-        let value = splitline
-            .next()
-            .unwrap()
-            .parse::<u16>()
-            .unwrap();
-        
+        let (command, value) = split_line(line);
         match command {
             "forward" => {
                 horizontal += value;

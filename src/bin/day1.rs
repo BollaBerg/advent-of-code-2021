@@ -1,4 +1,4 @@
-use std::fs;
+use aoc_lib;
 
 /// Count times the value of entries increases
 fn count_depth_increase(entries: &Vec<u16>) -> usize {
@@ -16,10 +16,7 @@ fn count_sliding_depth_increase(entries: &Vec<u16>) -> usize {
 }
 
 fn main() {
-    let filename = "inputs/day1.txt";
-
-    let entries = fs::read_to_string(filename)
-        .expect("Something went wrong trying to read the file");
+    let entries = aoc_lib::read_entries("day1.txt");
     let entries_num : Vec<u16> = entries
         .lines().
         map(|x| x.parse::<u16>().unwrap())

@@ -52,7 +52,7 @@ fn find_target_value(entry_list: &Vec<Vec<u32>>, importance: BitImportance) -> R
     Err("No target value found")
 }
 
-fn task2(counts : &Vec<u32>, total_count : u32, entries : &String) {
+fn task2(entries : &String) {
     let entry_lines = entries.lines().collect::<Vec<_>>();
     let entry_list : Vec<Vec<u32>>= entry_lines
         .iter()
@@ -61,17 +61,6 @@ fn task2(counts : &Vec<u32>, total_count : u32, entries : &String) {
             .map(|entry| entry.to_digit(2).unwrap())
             .collect::<Vec<_>>())
         .collect();
-
-    let mut oxygen_target = vec![0b0; 12];
-    let mut co2_target = vec![0b0; 12];
-
-    for (i, count) in counts.iter().enumerate() {
-        if *count >= total_count / 2 {
-            oxygen_target[i] = 1;
-        } else {
-            co2_target[i] = 1;
-        }
-    }
 
     let oxygen_rating = find_target_value(&entry_list, BitImportance::MostCommon).unwrap();
     let co2_rating = find_target_value(&entry_list, BitImportance::LeastCommon).unwrap();
@@ -108,6 +97,6 @@ fn main() {
     task1(&counts, total_count);
 
     println!("Task 2");
-    task2(&counts, total_count, &entries);
+    task2(&entries);
 
 }

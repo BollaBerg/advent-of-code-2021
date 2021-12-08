@@ -1,4 +1,13 @@
-fn task1(counts : &Vec<u32>, total_count : u32) {
+fn task1(entries : &String) {
+    let total_count = entries.lines().count() as u32;
+    let mut counts = vec![0; 12];
+
+    for line in entries.lines() {
+        for (i, value) in line.chars().enumerate() {
+            counts[i] += value.to_digit(2).unwrap();
+        }
+    }
+
     let mut gamma = 0;
     let mut epsilon = 0;
     let factor : i32 = 2;
@@ -17,6 +26,7 @@ fn task1(counts : &Vec<u32>, total_count : u32) {
     println!("Multiplied value  : {}", gamma * epsilon);
 }
 
+// Task 2 stuff
 enum BitImportance {
     MostCommon,
     LeastCommon
@@ -84,17 +94,8 @@ fn task2(entries : &String) {
 fn main() {
     let entries = aoc_lib::read_entries("day3.txt");
 
-    let total_count = entries.lines().count() as u32;
-    let mut counts = vec![0; 12];
-
-    for line in entries.lines() {
-        for (i, value) in line.chars().enumerate() {
-            counts[i] += value.to_digit(2).unwrap();
-        }
-    }
-
     println!("Task 1");
-    task1(&counts, total_count);
+    task1(&entries);
 
     println!("Task 2");
     task2(&entries);

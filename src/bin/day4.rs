@@ -1,8 +1,10 @@
 use aoc_lib;
 
+use retain_mut::RetainMut;
+
 const ROW_SIZE : usize = 5;
 
-#[derive(Clone)]
+#[derive(Clone, Copy)]
 struct Board {
     entries : [u8; ROW_SIZE * ROW_SIZE],
     called_entries : [bool; ROW_SIZE * ROW_SIZE],
@@ -29,6 +31,10 @@ impl Board {
         self.check_win(index)
     }
 
+    /// Check if the board has won
+    /// 
+    /// Because the board can only win if the last picked number contributes
+    /// to a winning row or column, we only need to check one row and column per board
     fn check_win(&self, index: usize) -> bool {
         // Check row
         let mut row_win = true;
@@ -73,6 +79,29 @@ fn task1(entries: &Vec<u8>, boards: &mut Vec<Board>) {
     }
 }
 
+fn task2(entries: &Vec<u8>, input_boards: &Vec<Board>) {
+    let mut boards = input_boards.to_owned();
+    let mut last_board = boards[0];
+
+    for &entry in entries {
+        boards.retain_mut(|board| !board.pick_number(entry));
+
+        if boards.len() == 1 {
+            // The last winning board has been found!
+            println!("Last board remaining! Picked number = {}", entry);
+            last_board = boards[0];
+        } else if boards.len() == 0 {
+            println!("Board finally won! Picked number: {}", entry);
+            // Need to update last_board as well, as it isn't copied after last round of retain_mut
+            last_board.pick_number(entry);
+            
+            println!("Board score: {}", last_board.score());
+            println!("Final score: {}", last_board.score() * entry as u32);
+            return;
+        }
+    }
+}
+
 fn main() {
     let data = aoc_lib::read_entries("day4.txt");
     let entries : Vec<u8> = data
@@ -93,4 +122,7 @@ fn main() {
     
     println!("Task 1");
     task1(&entries, &mut boards);
+    
+    println!("Task 2");
+    task2(&entries, &boards);
 }

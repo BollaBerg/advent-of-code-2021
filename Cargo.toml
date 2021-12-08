@@ -10,3 +10,4 @@ name = "aoc_lib"
 path = "src/lib.rs"
 
 [dependencies]
+retain_mut = "0.1.5"    # Used in day 4, as Vec.retain cannot give mutable reference

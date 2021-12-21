@@ -8,3 +8,9 @@ Each day can be run by using:
 cargo run --bin dayX
 ```
 where X is the day you want to run
+
+## Testing the code
+Tests for each day can be run by using:
+```bash
+cargo test --bin dayX
+```

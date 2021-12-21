@@ -81,4 +81,39 @@ fn test_total_task_1() {
     assert_eq!(count(&map), 5);
 }
 
+#[test]
+fn vent_updates_diagonal_correctly() {
+    let vent = Vent::from_string("1,1 -> 7,7");
+    let mut array : [[u8; 1000] ; 1000] = [[0; 1000] ; 1000];
+
+    vent.update_all(&mut array);
+
+    let mut manual_array : [[u8; 1000] ; 1000] = [[0; 1000] ; 1000];
+    for i in 1..=7 {
+        manual_array[i][i] = 1;
+    }
+
+    assert_eq!(array, manual_array);
+}
+
+#[test]
+fn test_total_task_2() {
+    let inputs = 
+        "0,9 -> 5,9
+8,0 -> 0,8
+9,4 -> 3,4
+2,2 -> 2,1
+7,0 -> 7,4
+6,4 -> 2,0
+0,9 -> 2,9
+3,4 -> 1,4
+0,0 -> 8,8
+5,5 -> 8,2";
+    let mut map : [[u8; 1000] ; 1000] = [[0; 1000] ; 1000];
+    for line in inputs.lines() {
+        let vent = Vent::from_string(line);
+        vent.update_all(&mut map);
+    }
+
+    assert_eq!(count(&map), 12);
 }

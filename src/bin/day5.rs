@@ -45,6 +45,26 @@ impl Vent {
             }
         }
     }
+
+    fn update_all(&self, board : &mut [[u8; 1000] ; 1000]) {
+        let delta_x : i16 = self.end.0 as i16 - self.start.0 as i16;
+        let delta_y : i16 = self.end.1 as i16 - self.start.1 as i16;
+
+        if delta_x.abs() == delta_y.abs() {
+            let x_add = if delta_x > 0 {true} else {false};
+            let y_add = if delta_y > 0 {true} else {false};
+            let mut x = self.start.0;
+            let mut y = self.start.1;
+            loop {
+                board[x][y] += 1;
+                if x == self.end.0 { break; }
+                if x_add {x += 1;} else {x -= 1;};
+                if y_add {y += 1;} else {y -= 1;};
+            }
+        } else {
+            self.update_only_horizontal_and_vertical(board);
+        }
+    }
 }
 
 
@@ -72,7 +92,22 @@ fn task1() {
 }
 
 
+fn task2() {
+    println!("#####   TASK 2   #####");
+
+    let mut map : [[u8; 1000] ; 1000] = [[0; 1000] ; 1000];
+    for line in aoc_lib::read_entries("day5.txt").lines() {
+        let vent = Vent::from_string(line);
+        vent.update_all(&mut map);
+    }
+
+    let map_count = count(&map);
     
+    println!("Points where two or more lines overlap: {}", map_count);
+}
+
+
 fn main() {
     task1();
+    task2();
 }
